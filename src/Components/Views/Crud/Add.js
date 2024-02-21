@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { Button, Form, Row, Col } from 'react-bootstrap'
-import Select from 'react-select'
+import React, { useEffect, useState } from "react";
+import useFetch from "use-http";
+import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
+import { Button, Form, Row, Col } from "react-bootstrap";
+import Select from "react-select";
+import PropTypes from "prop-types";
 
 import {
   CButton,
@@ -13,52 +14,60 @@ import {
   CModalFooter,
   CModalTitle,
   CContainer,
-} from '@coreui/react'
+} from "@coreui/react";
 
-export default function PropertyForm() {
-  const [visible, setVisible] = useState(false)
-  const [useTypeOptions, setUseTypeOptions] = useState([])
-  const [paymentTermOptions, setPaymentTermOptions] = useState([])
+export default function PropertyForm({ after_submit }) {
+  const [visible, setVisible] = useState(false);
+  const [useTypeOptions, setUseTypeOptions] = useState([]);
+  const [paymentTermOptions, setPaymentTermOptions] = useState([]);
 
-  const { register, handleSubmit, control, reset } = useForm()
-  const { get, post, response } = useFetch()
+  const { register, handleSubmit, control, reset } = useForm();
+  const { get, post, response } = useFetch();
 
   async function fetchProperties() {
-    const api = await get('/v1/admin/options')
+    const api = await get("/v1/admin/options");
+
+    toast("dddd");
 
     if (response.ok) {
-      const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
+      const propertyUseTypesOptions = Object.entries(
+        api.property_use_types
+      ).map((element) => ({
         value: element[1],
         label: element[0],
-      }))
+      }));
 
-      const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
-        ([key, value]) => ({
-          value: value,
-          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
-        }),
-      )
-      setPaymentTermOptions(propertyPaymentTermsOptions)
-      setUseTypeOptions(propertyUseTypesOptions)
+      const propertyPaymentTermsOptions = Object.entries(
+        api.property_payment_terms
+      ).map(([key, value]) => ({
+        value: value,
+        label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " "),
+      }));
+      setPaymentTermOptions(propertyPaymentTermsOptions);
+      setUseTypeOptions(propertyUseTypesOptions);
     }
   }
 
   useEffect(() => {
-    fetchProperties()
-  }, [])
-
- 
+    fetchProperties();
+  }, []);
 
   async function onSubmit(data) {
-
-    const apiResponse = await post(`/v1/admin/premises/properties`, { property: data })
+    const apiResponse = await post(`/v1/admin/premises/properties`, {
+      property: data,
+    });
+    console.log("jhjh");
 
     if (response.ok) {
-      toast('Property added successfully')
-      setVisible(!visible)
-      reset()
+      console.log("jhjh");
+      toast("Property added successfully");
+      setVisible(!visible);
+      after_submit();
+      reset();
     } else {
-      toast(apiResponse.data?.message)
+      console.log("jhjh");
+
+      toast(apiResponse.data?.message);
     }
   }
 
@@ -81,7 +90,9 @@ export default function PropertyForm() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Property Details</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">
+            Add Property Details
+          </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -94,14 +105,17 @@ export default function PropertyForm() {
                       required
                       placeholder="Full Name"
                       type="text"
-                      {...register('name', { required: ' Name is required.' })}
+                      {...register("name", { required: " Name is required." })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>City</label>
-                    <Form.Control type="text" {...register('city')}></Form.Control>
+                    <Form.Control
+                      type="text"
+                      {...register("city")}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -115,7 +129,9 @@ export default function PropertyForm() {
                         <Select
                           {...field}
                           options={useTypeOptions}
-                          value={useTypeOptions.find((c) => c.value === field.value)}
+                          value={useTypeOptions.find(
+                            (c) => c.value === field.value
+                          )}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
@@ -134,7 +150,9 @@ export default function PropertyForm() {
                         <Select
                           {...field}
                           options={paymentTermOptions}
-                          value={paymentTermOptions.find((c) => c.value === field.value)}
+                          value={paymentTermOptions.find(
+                            (c) => c.value === field.value
+                          )}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
@@ -156,7 +174,7 @@ export default function PropertyForm() {
                   <CButton
                     className="custom_grey_button"
                     color="secondary "
-                    style={{ border: '0px', color: 'white' }}
+                    style={{ border: "0px", color: "white" }}
                     onClick={() => setVisible(false)}
                   >
                     Close
@@ -169,5 +187,9 @@ export default function PropertyForm() {
         </CModalBody>
       </CModal>
     </div>
-  )
+  );
 }
+
+PropertyForm.propTypes = {
+  after_submit: PropTypes.func,
+};

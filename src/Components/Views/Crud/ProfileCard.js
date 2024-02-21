@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "use-http";
 import Add from "./Add";
-import { NavLink, Link } from "react-router-dom";
-import { Row, Col, Dropdown } from "react-bootstrap";
+import { NavLink, useLocation } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 import { BsThreeDots } from "react-icons/bs";
 import Loading from "../components/loading/loading";
 import CustomDivToggle from "../components/CustomDivToggle";
@@ -20,24 +20,21 @@ import Edit from "./Edit";
 function ProfileCard() {
   const { get, response, error } = useFetch();
 
-  useEffect(() => {}, []);
+  const location = useLocation();
 
   const [properties, setProperties] = useState([]);
-  const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [refresh, setRefresh] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [errors, setErrors] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const loadInitialProperties = async (searchTerm = "") => {
-    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`;
+  const loadInitialProperties = async () => {
+    let endpoint = `/v1/admin/premises/properties?page=${currentPage}`;
 
     const initialProperties = await get(endpoint);
     if (response.ok) {
       setLoading(false);
       setProperties(initialProperties.data);
-      setPagination(initialProperties.pagination);
     } else {
       setErrors(true);
       setLoading(false);
@@ -46,11 +43,8 @@ function ProfileCard() {
 
   useEffect(() => {
     loadInitialProperties();
-  }, [currentPage, searchKeyword]);
+  }, [currentPage, searchKeyword, location]);
 
-  const handlePageClick = (e) => {
-    setCurrentPage(e.selected + 1);
-  };
   const refresh_data = () => {
     loadInitialProperties();
 
@@ -78,7 +72,7 @@ function ProfileCard() {
                     placeholder="Search"
                   />
                   <br></br>
-                  <Add />
+                  <Add after_submit={refresh_data} />
                 </CForm>
               </div>
             </CContainer>

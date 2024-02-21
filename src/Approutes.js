@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 
 import Homepage from "./Components/Views/Homepage";
-import Login from "./Components/Login/Login";
+import Login from "./Components/Login./Login";
 import { Container, Spinner } from "react-bootstrap";
 import { Navigate, Route, Routes } from "react-router-dom";
 
