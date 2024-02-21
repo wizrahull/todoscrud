@@ -6,7 +6,13 @@ export function AuthProvider(props) {
   const [authUser, setAuthUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
+
   const [isLogged, setIslogged] = useState();
+  if (localStorage.getItem("token")) {
+    setIslogged(true);
+  } else {
+    setIslogged(false);
+  }
 
   const meta_data = {
     authUser,
