@@ -6,10 +6,8 @@ import { toast } from "react-toastify";
 
 import { useAuth } from "../../Auth/AuthModule";
 
-import useFetch from "use-http";
-
 export default function () {
-  const { register, handleSubmit, control, setValue } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   const { authUser, setAuthUser, isLogged, setIslogged } = useAuth();

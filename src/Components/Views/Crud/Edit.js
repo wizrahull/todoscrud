@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { useNavigate, useParams } from 'react-router-dom'
-import Select from 'react-select'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from "react";
+import useFetch from "use-http";
+import { useForm, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
+
+import PropTypes from "prop-types";
 import {
   CButton,
   CModal,
@@ -13,71 +12,71 @@ import {
   CModalFooter,
   CModalTitle,
   CContainer,
-} from '@coreui/react'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+} from "@coreui/react";
+import { Button, Form, Row, Col } from "react-bootstrap";
 
 export default function EditProperty({ propertyId }) {
-  const { get, put, response } = useFetch()
+  const { get, put, response } = useFetch();
 
-  const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, control } = useForm()
+  const [visible, setVisible] = useState(false);
+  const { register, handleSubmit, setValue, control } = useForm();
 
-  const [propertyData, setPropertyData] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [propertyData, setPropertyData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   async function fetchPropertyData() {
     try {
-      const api = await get(`/v1/admin/premises/properties/${propertyId}`)
+      const api = await get(`/v1/admin/premises/properties/${propertyId}`);
       if (response.ok) {
-        setValue('name', api.data.name)
-        setValue('city', api.data.city)
-        setValue('use_type', api.data.use_type)
-        setValue('payment_term', api.data.payment_term)
+        setValue("name", api.data.name);
+        setValue("city", api.data.city);
+        setValue("use_type", api.data.use_type);
+        setValue("payment_term", api.data.payment_term);
 
-        setPropertyData(api.data)
-        setLoading(false)
+        setPropertyData(api.data);
+        setLoading(false);
       } else {
-        toast.error(response.data?.message || 'Failed to fetch property data')
+        toast.error(response.data?.message || "Failed to fetch property data");
       }
     } catch (error) {
-      console.error('Error fetching property data:', error)
+      console.error("Error fetching property data:", error);
     }
   }
 
   useEffect(() => {
-    fetchPropertyData()
-  }, [])
-
-  
+    fetchPropertyData();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
-      const result = await put(`/v1/admin/premises/properties/${propertyId}`, { property: data })
-      console.log('API response:', result)
+      const result = await put(`/v1/admin/premises/properties/${propertyId}`, {
+        property: data,
+      });
+      console.log("API response:", result);
 
       if (result.ok) {
-        toast.success('Property Data Edited Successfully')
-        setVisible(!visible)
+        toast.success("Property Data Edited Successfully");
+        setVisible(!visible);
       } else {
-        toast.error(result.data?.message || 'Failed to edit property data')
-        console.error('Error editing property data:', result)
+        toast.error(result.data?.message || "Failed to edit property data");
+        console.error("Error editing property data:", result);
       }
     } catch (error) {
-      toast.error('An unexpected error occurred while editing property data')
-      console.error('Unexpected error editing property data:', error)
+      toast.error("An unexpected error occurred while editing property data");
+      console.error("Unexpected error editing property data:", error);
     }
-  }
+  };
 
   return (
     <>
       <div>
         <button
           style={{
-            backgroundColor: 'white',
-            marginLeft: '4px',
-            width: '90%',
-            border: 'none',
-            color: '#00bfcc',
+            backgroundColor: "white",
+            marginLeft: "4px",
+            width: "90%",
+            border: "none",
+            color: "#00bfcc",
           }}
           type="button"
           className="btn btn-tertiary "
@@ -95,7 +94,9 @@ export default function EditProperty({ propertyId }) {
           aria-labelledby="StaticBackdropExampleLabel"
         >
           <CModalHeader>
-            <CModalTitle id="StaticBackdropExampleLabel">Edit Property</CModalTitle>
+            <CModalTitle id="StaticBackdropExampleLabel">
+              Edit Property
+            </CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CContainer>
@@ -108,14 +109,18 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Property Name"
                           type="text"
-                          {...register('name')}
+                          {...register("name")}
                         />
                       </Form.Group>
                     </Col>
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>City</label>
-                        <Form.Control placeholder="City" type="text" {...register('city')} />
+                        <Form.Control
+                          placeholder="City"
+                          type="text"
+                          {...register("city")}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -126,7 +131,7 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Use Type"
                           type="text"
-                          {...register('use_type')}
+                          {...register("use_type")}
                         />
                       </Form.Group>
                     </Col>
@@ -138,7 +143,7 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Payment Term"
                           type="text"
-                          {...register('payment_term')}
+                          {...register("payment_term")}
                         />
                       </Form.Group>
                     </Col>
@@ -154,7 +159,11 @@ export default function EditProperty({ propertyId }) {
                       </Button>
                       <CButton
                         className="custom_grey_button"
-                        style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
+                        style={{
+                          color: "white",
+                          backgroundColor: "gray",
+                          border: "none",
+                        }}
                         onClick={() => setVisible(false)}
                       >
                         Close
@@ -169,9 +178,9 @@ export default function EditProperty({ propertyId }) {
         </CModal>
       </div>
     </>
-  )
+  );
 }
 
 EditProperty.propTypes = {
   propertyId: PropTypes.number.isRequired,
-}
+};

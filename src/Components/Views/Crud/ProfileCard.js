@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "use-http";
 import Add from "./Add";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { BsThreeDots } from "react-icons/bs";
 import Loading from "../components/loading/loading";
 import CustomDivToggle from "../components/CustomDivToggle";
-import {
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CForm,
-  CFormInput,
-  CButton,
-} from "@coreui/react";
+import { CNavbar, CContainer, CNavbarBrand } from "@coreui/react";
 import Show from "./Show";
 import Edit from "./Edit";
+import { toast } from "react-toastify";
 
 function ProfileCard() {
   const { get, response, error } = useFetch();
@@ -38,6 +32,7 @@ function ProfileCard() {
     } else {
       setErrors(true);
       setLoading(false);
+      toast("Unable to load data");
     }
   };
 
