@@ -45,9 +45,6 @@ function ProfileCard() {
     loadInitialProperties();
   }, [currentPage, searchKeyword, location]);
 
-  const handlePageClick = (e) => {
-    setCurrentPage(e.selected + 1);
-  };
   const refresh_data = () => {
     loadInitialProperties();
 

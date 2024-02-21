@@ -27,6 +27,8 @@ export default function PropertyForm({ after_submit }) {
   async function fetchProperties() {
     const api = await get("/v1/admin/options");
 
+    toast("dddd");
+
     if (response.ok) {
       const propertyUseTypesOptions = Object.entries(
         api.property_use_types
@@ -54,13 +56,17 @@ export default function PropertyForm({ after_submit }) {
     const apiResponse = await post(`/v1/admin/premises/properties`, {
       property: data,
     });
+    console.log("jhjh");
 
     if (response.ok) {
+      console.log("jhjh");
       toast("Property added successfully");
       setVisible(!visible);
       after_submit();
       reset();
     } else {
+      console.log("jhjh");
+
       toast(apiResponse.data?.message);
     }
   }
