@@ -31,7 +31,10 @@ export default function Navb() {
     <div>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">TODOS</Navbar.Brand>
+          <Navbar.Brand>
+            {" "}
+            <NavLink to="/homepage">TODOS </NavLink>
+          </Navbar.Brand>
           <Nav className="me-auto">
             {isLogged ? (
               <>

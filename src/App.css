@@ -44,10 +44,7 @@ a {
   ::-webkit-scrollbar {
     display: none;
   }
-  a {
-    color: #00bfcc;
-    text-decoration-line: none;
-  }
+
   input {
     border: 1px solid #00bfcc;
     padding-block-start: 5px;
@@ -87,4 +84,12 @@ a {
 .custom_search_button {
   border-radius: 0px;
   border-left: 0px;
+}
+
+.active {
+  color: #00bfcc;
+}
+
+td > a {
+  color: black;
 }
