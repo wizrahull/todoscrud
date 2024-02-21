@@ -17,7 +17,6 @@ export function AuthProvider(props) {
     isLogged,
     setIslogged,
   };
-  console.log(authUser);
 
   return (
     <AuthContext.Provider value={meta_data}>
