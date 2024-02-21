@@ -61,19 +61,8 @@ function ProfileCard() {
               <CNavbarBrand href="#">Property</CNavbarBrand>
 
               <div className="d-flex justify-content-end">
-                <CForm
-                  onSubmit={(e) => e.preventDefault()}
-                  className="input-group  d-flex "
-                >
-                  <CFormInput
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    type="search"
-                    className="me-0 custom_input"
-                    placeholder="Search"
-                  />
-                  <br></br>
-                  <Add />
-                </CForm>
+                <br></br>
+                <Add />
               </div>
             </CContainer>
           </CNavbar>
