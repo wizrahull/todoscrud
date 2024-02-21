@@ -72,7 +72,7 @@ function ProfileCard() {
                     placeholder="Search"
                   />
                   <br></br>
-                  <Add after_submit={refresh_data} />
+                  <Add />
                 </CForm>
               </div>
             </CContainer>
@@ -104,11 +104,7 @@ function ProfileCard() {
                           {properties.map((property) => (
                             <tr key={property.id}>
                               <td style={{ textTransform: "capitalize" }}>
-                                <NavLink
-                                  to={`/properties/${property.id}/overview`}
-                                >
-                                  {property.name}
-                                </NavLink>
+                                {property.name}
                               </td>
                               <td>{property.city}</td>
                               <td style={{ textTransform: "uppercase" }}>
