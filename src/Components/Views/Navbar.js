@@ -16,12 +16,15 @@ export default function Navb() {
 
   React.useEffect(() => {
     checkauth();
-  }, []);
+  }, [isLogged]);
 
   function checkauth() {
+    console.log(isLogged);
     if (!isLogged) {
       navigate("/login");
+      console.log("ddd");
     }
+    console.log("ddd");
   }
 
   return (
