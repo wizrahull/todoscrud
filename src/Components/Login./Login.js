@@ -54,7 +54,11 @@ export default function () {
 
   return (
     <div className=" d-flex justify-content-center  text-light mt-5 p-4  ">
-      <Card className="mt-4 p-3 shadow-5-strong bg-secondary ">
+      <Card
+        className="mt-4 p-5 shadow-lg  "
+        style={{ backgroundColor: " rgba(0,0,0, 0.4)" }}
+      >
+        <h1 className="text-white text-center"> TODOS LOGIN</h1>
         <Form className="p-3" onSubmit={handleSubmit(handleForm)}>
           <Form.Group className="mb-3 " controlId="formBasicEmail">
             <Form.Label className="text-white">Email address</Form.Label>
@@ -75,9 +79,9 @@ export default function () {
           </Form.Group>
 
           <Button
-            variant="primary"
+            variant="success"
             type="submit"
-            className="d-flex justify-content-center "
+            className="d-flex justify-content-center  w-100"
           >
             LOG IN
           </Button>

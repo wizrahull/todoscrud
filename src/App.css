@@ -32,7 +32,7 @@ a {
     color: #eee;
   }
   50% {
-    color: #00bfcc;
+    color: #14a44d;
   }
   100% {
     left: 90px;
@@ -49,7 +49,7 @@ body {
   }
 
   input {
-    border: 1px solid #00bfcc;
+    border: 1px solid #14a44d;
     padding-block-start: 5px;
   }
 }
@@ -57,19 +57,19 @@ body {
 .custom_input:focus {
 }
 .custom_input {
-  border: 1px solid #00bfcc;
+  border: 1px solid #14a44d;
   border-radius: 0px;
 }
 .custom_theme_button {
   border-radius: 2px;
-  background-color: #00bfcc;
+  background-color: #14a44d;
   color: white;
   margin-left: 4px;
   height: 100%;
   border: 0px;
 }
 .custom_theme_button:hover {
-  background-color: #00beccc2;
+  background-color: #14a44ecb;
   color: white;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 .active {
-  color: #00bfcc;
+  color: #14a44d;
 }
 
 td > a {

@@ -33,7 +33,7 @@ export default function Navb() {
         <Container>
           <Navbar.Brand>
             {" "}
-            <NavLink to="/homepage">TODOS </NavLink>
+            <NavLink to="/">TODOS </NavLink>
           </Navbar.Brand>
           <Nav className="me-auto">
             {isLogged ? (
