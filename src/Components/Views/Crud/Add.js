@@ -54,13 +54,27 @@ export default function PropertyForm({ after_submit }) {
     const apiResponse = await post(`/v1/admin/premises/properties`, {
       property: data,
     });
-    console.log("jhjh");
 
     if (response.ok) {
-      console.log("jhjh");
       toast("Property added successfully");
       setVisible(!visible);
       after_submit();
+      reset();
+    } else {
+      toast(apiResponse.data?.message);
+    }
+  }
+
+  async function onSubmit(data) {
+    const apiResponse = await post(`/v1/admin/premises/properties`, {
+      property: data,
+    });
+    console.log(apiResponse);
+
+    if (apiResponse.data) {
+      after_submit();
+      toast("Property added successfully");
+      setVisible(!visible);
       reset();
     } else {
       console.log("jhjh");
@@ -113,6 +127,15 @@ export default function PropertyForm({ after_submit }) {
                     <Form.Control
                       type="text"
                       {...register("city")}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3 col-12">
+                  <Form.Group>
+                    <label>Address</label>
+                    <Form.Control
+                      type="text"
+                      {...register("address")}
                     ></Form.Control>
                   </Form.Group>
                 </Col>

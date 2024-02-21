@@ -23,26 +23,28 @@ function ProfileCard() {
   const [loading, setLoading] = useState(true);
 
   const loadInitialProperties = async () => {
-    let endpoint = `/v1/admin/premises/properties?page=${currentPage}`;
-
+    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchKeyword}`;
     const initialProperties = await get(endpoint);
-    if (response.ok) {
+
+    if (initialProperties?.data) {
       setLoading(false);
       setProperties(initialProperties.data);
     } else {
       setErrors(true);
       setLoading(false);
-      toast("Unable to load data");
     }
   };
 
   useEffect(() => {
     loadInitialProperties();
-  }, [currentPage, searchKeyword, location]);
+  }, [currentPage, searchKeyword]);
+
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
 
   const refresh_data = () => {
     loadInitialProperties();
-
     setSearchKeyword("");
   };
 
@@ -57,7 +59,7 @@ function ProfileCard() {
 
               <div className="d-flex justify-content-end">
                 <br></br>
-                <Add />
+                <Add after_submit={refresh_data} />
               </div>
             </CContainer>
           </CNavbar>
