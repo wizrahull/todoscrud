@@ -53,11 +53,11 @@ export default function () {
   };
 
   return (
-    <div className=" d-flex justify-content-center  text-light mt-5  ">
-      <Card className="mt-4 p-3 shadow-5-strong bg-secondary">
-        <Form onSubmit={handleSubmit(handleForm)}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+    <div className=" d-flex justify-content-center  text-light mt-5 p-4  ">
+      <Card className="mt-4 p-3 shadow-5-strong bg-secondary ">
+        <Form className="p-3" onSubmit={handleSubmit(handleForm)}>
+          <Form.Group className="mb-3 " controlId="formBasicEmail">
+            <Form.Label className="text-white">Email address</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
@@ -66,18 +66,20 @@ export default function () {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className="text-white">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
               {...register("password")}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
+
+          <Button
+            variant="primary"
+            type="submit"
+            className="d-flex justify-content-center "
+          >
+            LOG IN
           </Button>
         </Form>
       </Card>
