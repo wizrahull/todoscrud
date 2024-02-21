@@ -179,4 +179,4 @@ function ProfileCard() {
   )
 }
 
-export default Property
+export default ProfileCard
