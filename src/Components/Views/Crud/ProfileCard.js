@@ -53,9 +53,9 @@ function ProfileCard() {
 
   return (
     <>
-      <div>
+      <div className="shadow-5 mt-3">
         {error && error.Error}
-        <section style={{ width: "100%", padding: "0px" }}>
+        <section className="w-100">
           <CNavbar expand="lg" colorScheme="light" className="bg-light">
             <CContainer fluid>
               <CNavbarBrand href="#">Property</CNavbarBrand>
@@ -79,7 +79,7 @@ function ProfileCard() {
           </CNavbar>
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container">
+              <div className="w-100">
                 <div className="row justify-content-center">
                   <div className="col-16">
                     <div className="table-responsive bg-white">

@@ -39,6 +39,9 @@ a {
     color: #eee;
   }
 }
+body {
+  background-color: rgba(0, 0, 0, 0.062);
+}
 
 * {
   ::-webkit-scrollbar {
