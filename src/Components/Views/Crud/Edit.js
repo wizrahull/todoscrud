@@ -29,6 +29,11 @@ export default function EditProperty({ propertyId }) {
     try {
       const api = await get(`/v1/admin/premises/properties/${propertyId}`)
       if (response.ok) {
+        setValue('name', api.data.name)
+        setValue('city', api.data.city)
+        setValue('use_type', api.data.use_type)
+        setValue('payment_term', api.data.payment_term)
+
         setPropertyData(api.data)
         setLoading(false)
       } else {
@@ -43,7 +48,9 @@ export default function EditProperty({ propertyId }) {
     fetchPropertyData()
   }, [])
 
-  async function onSubmit(data) {
+  
+
+  const onSubmit = async (data) => {
     try {
       const result = await put(`/v1/admin/premises/properties/${propertyId}`, { property: data })
       console.log('API response:', result)
@@ -51,7 +58,6 @@ export default function EditProperty({ propertyId }) {
       if (result.ok) {
         toast.success('Property Data Edited Successfully')
         setVisible(!visible)
-        setPropertyData(data) // Update the property data
       } else {
         toast.error(result.data?.message || 'Failed to edit property data')
         console.error('Error editing property data:', result)
@@ -102,7 +108,6 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Property Name"
                           type="text"
-                          defaultValue={propertyData.name}
                           {...register('name')}
                         />
                       </Form.Group>
@@ -110,12 +115,7 @@ export default function EditProperty({ propertyId }) {
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>City</label>
-                        <Form.Control
-                          placeholder="City"
-                          type="text"
-                          defaultValue={propertyData.city}
-                          {...register('city')}
-                        />
+                        <Form.Control placeholder="City" type="text" {...register('city')} />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -126,7 +126,6 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Use Type"
                           type="text"
-                          defaultValue={propertyData.use_type}
                           {...register('use_type')}
                         />
                       </Form.Group>
@@ -139,7 +138,6 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Payment Term"
                           type="text"
-                          defaultValue={propertyData.payment_term}
                           {...register('payment_term')}
                         />
                       </Form.Group>
