@@ -61,7 +61,7 @@ export default function () {
         <h1 className="text-white text-center"> TODOS LOGIN</h1>
         <Form className="p-3" onSubmit={handleSubmit(handleForm)}>
           <Form.Group className="mb-3 " controlId="formBasicEmail">
-            <Form.Label className="text-white">Email address</Form.Label>
+            <Form.Label className="text-white">Email or Username</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
