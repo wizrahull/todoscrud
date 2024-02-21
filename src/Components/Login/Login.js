@@ -38,7 +38,7 @@ export default function () {
         setAuthUser(resJson.object);
         navigate("/homepage");
         console.log(resJson);
-        toast("Logged In ");
+        toast("Logged In");
       })
       .catch((error) => {
         if (!("json" in error) || error.status == 404) {

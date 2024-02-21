@@ -27,8 +27,6 @@ export default function PropertyForm({ after_submit }) {
   async function fetchProperties() {
     const api = await get("/v1/admin/options");
 
-    toast("dddd");
-
     if (response.ok) {
       const propertyUseTypesOptions = Object.entries(
         api.property_use_types

@@ -5,7 +5,6 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import { Provider } from "use-http";
 import "./App.css";
 import { AuthProvider } from "./Auth/AuthModule";
-import { Container } from "react-bootstrap";
 
 function App() {
   return (
