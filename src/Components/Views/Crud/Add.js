@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
-import PropTypes from 'prop-types'
 
 import {
   CButton,
@@ -17,114 +15,73 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function Add({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
-  const { get, post, response, api } = useFetch()
-
-  const { propertyId } = useParams()
+export default function PropertyForm() {
   const [visible, setVisible] = useState(false)
-  const [unitData, setUnitData] = useState({})
-  const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
-  const [units_data, setUnits_data] = useState([])
-  const [buildings_data, setBuildings_data] = useState([])
+  const [useTypeOptions, setUseTypeOptions] = useState([])
+  const [paymentTermOptions, setPaymentTermOptions] = useState([])
 
-  useEffect(() => {
-    const inputs = document.querySelectorAll('.form-group input')
-    inputs.forEach((input) => {
-      input.addEventListener('focus', () => {
-        input.classList.add('active')
-      })
-      input.addEventListener('blur', () => {
-        if (!input.value) {
-          input.classList.remove('active')
-        }
-      })
-    })
-  }, [])
+  const { register, handleSubmit, control, reset } = useForm()
+  const { get, post, response } = useFetch()
 
-  function trimUnits(units) {
-    if (units && units.data) {
-      return units.data.map((e) => ({
-        value: e.unit_type.id,
-        label: e.unit_type.name,
+  async function fetchProperties() {
+    const api = await get('/v1/admin/options')
+
+    if (response.ok) {
+      const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
+        value: element[1],
+        label: element[0],
       }))
-    } else {
-      return []
-    }
-  }
 
-  function trimBuildings(buildings) {
-    if (buildings) {
-      return buildings.map((e) => ({
-        value: e?.id,
-        label: e?.name,
-      }))
-    } else {
-      return []
-    }
-  }
-
-  async function fetchBuildings() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
-    if (response.ok && api.data) {
-      setBuildings_data(trimBuildings(api.data))
-    } else {
-    }
-  }
-
-  async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
-    if (response.ok && api.data) {
-      setUnits_data(trimUnits(api))
-    } else {
+      const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
+        ([key, value]) => ({
+          value: value,
+          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+        }),
+      )
+      setPaymentTermOptions(propertyPaymentTermsOptions)
+      setUseTypeOptions(propertyUseTypesOptions)
     }
   }
 
   useEffect(() => {
-    fetchUnits()
-    fetchBuildings()
+    fetchProperties()
   }, [])
+
+ 
 
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
-      unit: data,
-    })
+
+    const apiResponse = await post(`/v1/admin/premises/properties`, { property: data })
+
     if (response.ok) {
-      navigate(`/properties/${propertyId}/units`)
+      toast('Property added successfully')
       setVisible(!visible)
-      after_submit()
-      toast('Unit added successfully')
+      reset()
     } else {
-      setErrors(response.data.errors)
-      toast(response.data?.message)
+      toast(apiResponse.data?.message)
     }
-  }
-  function handleClose() {
-    setVisible(false)
-    setErrors({})
   }
 
   return (
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button "
+        className="btn s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add
+        Add Property
       </button>
       <CModal
         alignment="center"
         size="xl"
         visible={visible}
         backdrop="static"
-        onClose={handleClose}
+        onClose={() => setVisible(false)}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Details</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Property Details</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -132,131 +89,53 @@ function Add({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>
-                      Unit-Number
-                      <small className="text-danger"> *{errors ? errors.unit_no : null} </small>
-                    </label>
+                    <label>Name</label>
                     <Form.Control
-                      defaultValue={unitData.no}
-                      type="integer"
-                      {...register('unit_no')}
+                      required
+                      placeholder="Full Name"
+                      type="text"
+                      {...register('name', { required: ' Name is required.' })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Bedroom No.</label>
-
-                    <Form.Control
-                      defaultValue={unitData.bedrooms_number}
-                      type="integer"
-                      {...register('bedrooms_number')}
-                    ></Form.Control>
+                    <label>City</label>
+                    <Form.Control type="text" {...register('city')}></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Bathroom No.</label>
-                    <Form.Control
-                      defaultValue={unitData.bathrooms_number}
-                      type="integer"
-                      {...register('bathrooms_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Year Built{' '}
-                      <small className="text-danger "> *{errors ? errors.year_built : null} </small>
-                    </label>
-
-                    <Form.Control
-                      defaultValue={unitData.year_built}
-                      type="integer"
-                      {...register('year_built')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Unit Type{' '}
-                      <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
-                    </label>
-
+                    <label>Use Type</label>
                     <Controller
-                      name="unit_type_id"
+                      name="use_type"
                       render={({ field }) => (
                         <Select
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
                           {...field}
-                          value={units_data.find((c) => c.value === field.value)}
+                          options={useTypeOptions}
+                          value={useTypeOptions.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
-                          options={units_data}
                         />
                       )}
                       control={control}
                     />
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Electricity Account No.</label>
-
-                    <Form.Control
-                      defaultValue={unitData.electricity_account_number}
-                      type="string"
-                      {...register('electricity_account_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Water Account No.</label>
-                    <Form.Control
-                      defaultValue={unitData.water_account_number}
-                      type="string"
-                      {...register('water_account_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Internal Extension No.</label>
-                    <Form.Control
-                      defaultValue={unitData.internal_extension_number}
-                      type="string"
-                      {...register('internal_extension_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>
-                      Building
-                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
-                    </label>
-
+                    <label>Payment Term</label>
                     <Controller
-                      name="building_id"
+                      name="payment_term"
                       render={({ field }) => (
                         <Select
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
                           {...field}
-                          value={buildings_data.find((c) => c.value === field.value)}
+                          options={paymentTermOptions}
+                          value={paymentTermOptions.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
-                          options={buildings_data}
                         />
                       )}
                       control={control}
@@ -276,9 +155,9 @@ function Add({ after_submit }) {
                   </Button>
                   <CButton
                     className="custom_grey_button"
-                    color="secondary"
+                    color="secondary "
                     style={{ border: '0px', color: 'white' }}
-                    onClick={handleClose}
+                    onClick={() => setVisible(false)}
                   >
                     Close
                   </CButton>
@@ -291,10 +170,4 @@ function Add({ after_submit }) {
       </CModal>
     </div>
   )
-}
-
-export default Add
-
-Add.propTypes = {
-  after_submit: PropTypes.func,
 }

@@ -1,80 +1,60 @@
-// ProfileCard.js
-
-import React, { useState, useEffect } from 'react';
-import useFetch from 'use-http';
-import '../scss/_custom.scss';
-import '../scss/style.scss';
-import '../scss/_variables.scss';
-// import './scss/_layout.scss';
-import '../scss/_add.scss';
-import '../scss/_roles.scss';
-import { BsThreeDots } from 'react-icons/bs';
-import Loading from '../components/loading/loading';
-import { Row, Col, Dropdown } from 'react-bootstrap';
-import Paginate from '../components/Pagination';
-import { useParams } from 'react-router-dom';
-
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react';
-import CustomDivToggle from '../components/CustomDivToggle';
-import Add from './Add';
-import Edit from './Edit';
-import Delete from './Delete';
+import React, { useEffect, useState } from 'react'
+import useFetch from 'use-http'
+import "../scss/_custom.scss";
+import "../scss/style.scss";
+import "../scss/_variables.scss";
+import "../scss/_add.scss";
+import "../scss/_roles.scss";
+import Add from './Add'
+import { Dropdown } from 'react-bootstrap'
+import { NavLink, Link } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap'
+import { BsThreeDots } from 'react-icons/bs'
+import Paginate from '../components/Pagination'
+import Loading from '../components/loading/loading'
+import CustomDivToggle from '../components/CustomDivToggle'
+import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
+import Show from './Show'
+import Edit from './Edit'
 
 function ProfileCard() {
-  const { propertyId } = useParams();
-  const { get, response, error } = useFetch();
+  const { get, response, error } = useFetch()
 
-  const [units, setUnits] = useState([]);
-  const [pagination, setPagination] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [errors, setErrors] = useState(false);
-  const [loading, setLoading] = useState(true);
+  useEffect(() => {}, [])
 
-  useEffect(() => {
-    loadInitialUnits();
-  }, [currentPage, propertyId]);
+  const [properties, setProperties] = useState([])
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [refresh, setRefresh] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  async function loadInitialUnits(queries) {
-    try {
-      let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`;
+  const loadInitialProperties = async (searchTerm = '') => {
+    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`
 
-      if (queries) {
-        endpoint += queries;
-      }
-
-      if (searchKeyword) {
-        endpoint += `&q[unit_no_eq]=${searchKeyword}`;
-      }
-
-      const response = await get(endpoint);
-      if (response.ok) {
-        setErrors(false);
-        setLoading(false);
-        setUnits(response.data);
-        setPagination(response.pagination);
-      } else {
-        setErrors(true);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Error fetching units:', error);
-      setErrors(true);
-      setLoading(false);
+    const initialProperties = await get(endpoint)
+    if (response.ok) {
+      setLoading(false)
+      setProperties(initialProperties.data)
+      setPagination(initialProperties.pagination)
+    } else {
+      setErrors(true)
+      setLoading(false)
     }
   }
 
+  useEffect(() => {
+    loadInitialProperties()
+  }, [currentPage, searchKeyword])
+
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected + 1);
-  };
-
+    setCurrentPage(e.selected + 1)
+  }
   const refresh_data = () => {
-    loadInitialUnits();
-  };
+    loadInitialProperties()
 
-  function filter_callback(queries) {
-    loadInitialUnits(queries);
-    setSearchKeyword('');
+    setSearchKeyword('')
   }
 
   return (
@@ -84,30 +64,22 @@ function ProfileCard() {
         <section style={{ width: '100%', padding: '0px' }}>
           <CNavbar expand="lg" colorScheme="light" className="bg-light">
             <CContainer fluid>
-              <CNavbarBrand href="#">Unit</CNavbarBrand>
-              <div className="d-flex justify-content-end bg-light">
-                <div className="d-flex  " role="search">
-                  <input
-                    value={searchKeyword}
+              <CNavbarBrand href="#">Property</CNavbarBrand>
+
+              <div className="d-flex justify-content-end">
+                <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
+                  <CFormInput
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-0 custom_input  "
                     type="search"
+                    className="me-0 custom_input"
                     placeholder="Search"
-                    aria-label="Search"
                   />
-                  <button
-                    onClick={loadInitialUnits}
-                    className="btn btn-outline-success custom_search_button "
-                    type="submit"
-                  >
-                    Search
-                  </button>
-                </div>
-                <Add after_submit={refresh_data} />
+                  <br></br>
+                  <Add />
+                </CForm>
               </div>
             </CContainer>
           </CNavbar>
-
           <div>
             <div className="mask d-flex align-items-center h-100">
               <div className="container">
@@ -123,34 +95,42 @@ function ProfileCard() {
                           }}
                         >
                           <tr>
-                            <th className="pt-3 pb-3 border-0  ">Unit Number</th>
-                            <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
-                            <th className="pt-3 pb-3 border-0  ">Year Built</th>
-                            <th className="pt-3 pb-3 border-0 text-center ">Action </th>
+                            <th className="border-0">NAME</th>
+                            <th className="border-0">CITY</th>
+                            <th className="border-0">USE TYPE</th>
+                            <th className="border-0">PAYMENT TERM</th>
+                            <th className="border-0">ACTIONS</th>
                           </tr>
                         </thead>
 
                         <tbody>
-                          {units.map((unit) => (
-                            <tr key={unit.id}>
-                              <td className="pt-3">{unit.unit_no}</td>
-
-                              <td className="pt-3  ">
-                                {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
+                          {properties.map((property) => (
+                            <tr key={property.id}>
+                              <td style={{ textTransform: 'capitalize' }}>
+                                <NavLink to={`/properties/${property.id}/overview`}>
+                                  {property.name}
+                                </NavLink>
                               </td>
-                              <td className="pt-3  ">{unit.year_built}</td>
-                              <td className="pt-1 ">
-                                <Dropdown key={unit.id} className=" text-center">
+                              <td>{property.city}</td>
+                              <td style={{ textTransform: 'uppercase' }}>{property.use_type}</td>
+                              <td style={{ textTransform: 'capitalize' }}>
+                                {property.payment_term?.replace('_', ' ')}
+                              </td>
+                              <td>
+                                <Dropdown key={property.id}>
                                   <Dropdown.Toggle
                                     as={CustomDivToggle}
                                     style={{ cursor: 'pointer' }}
                                   >
+                                    <Dropdown.Menu>
+                                      <Edit
+                                        propertyId={property.id}
+                                        after_submit={refresh_data}
+                                      />
+                                      <Show propertyId={property.id} />
+                                    </Dropdown.Menu>
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <Edit unitId={unit.id} after_submit={refresh_data} />
-                                    <Delete unitId={unit.id} after_submit={refresh_data} />
-                                  </Dropdown.Menu>
                                 </Dropdown>
                               </td>
                             </tr>
@@ -158,14 +138,7 @@ function ProfileCard() {
                         </tbody>
                       </table>
                       {loading && <Loading />}
-                      {errors && (
-                        <p
-                          className="d-flex justify-content-cente"
-                          style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                        >
-                          There is a technical issue at Backend
-                        </p>
-                      )}
+                      
                     </div>
                   </div>
                 </div>
@@ -196,7 +169,7 @@ function ProfileCard() {
         </section>
       </div>
     </>
-  );
+  )
 }
 
-export default ProfileCard;
+export default ProfileCard
