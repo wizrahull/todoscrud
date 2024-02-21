@@ -6,7 +6,6 @@ import { Provider } from "use-http";
 import "./App.css";
 import React, { useEffect } from "react";
 import { AuthProvider } from "./Auth/AuthModule";
-import { useAuth } from "./Auth/AuthModule";
 
 function App() {
   return (

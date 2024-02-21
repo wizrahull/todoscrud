@@ -8,7 +8,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 function Approutes() {
   return (
     <>
-      <Container lg>
+      <Container>
         <Suspense fallback={<Spinner color="primary" />}>
           <Routes>
             <Route path="/" />
