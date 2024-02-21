@@ -1,5 +1,4 @@
-import React from 'react'
-import '../../scss/loader.css'
+import React from "react";
 export default function loading() {
   return (
     <div className="maincontainer">
@@ -10,5 +9,5 @@ export default function loading() {
         </div>
       </div>
     </div>
-  )
+  );
 }

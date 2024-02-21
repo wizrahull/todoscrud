@@ -11,6 +11,7 @@ export default function Navb() {
     setAuthUser(null);
     setIslogged(false);
     navigate("/login");
+    localStorage.clear();
   };
 
   React.useEffect(() => {
