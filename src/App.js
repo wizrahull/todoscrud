@@ -4,8 +4,8 @@ import Approutes from "./Approutes";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import { Provider } from "use-http";
 import "./App.css";
-import React, { useEffect } from "react";
 import { AuthProvider } from "./Auth/AuthModule";
+import { Container } from "react-bootstrap";
 
 function App() {
   return (

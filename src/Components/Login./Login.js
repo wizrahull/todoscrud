@@ -53,7 +53,7 @@ export default function () {
   };
 
   return (
-    <div className=" d-flex justify-content-center  text-light mt-5 p-4  ">
+    <div className=" d-flex justify-content-center mt-5 ">
       <Card
         className="mt-4 p-5 shadow-lg  "
         style={{ backgroundColor: " rgba(0,0,0, 0.4)" }}

@@ -43,17 +43,6 @@ body {
   background-color: rgba(0, 0, 0, 0.062);
 }
 
-* {
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  input {
-    border: 1px solid #14a44d;
-    padding-block-start: 5px;
-  }
-}
-
 .custom_input:focus {
 }
 .custom_input {
