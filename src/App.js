@@ -9,19 +9,6 @@ import { AuthProvider } from "./Auth/AuthModule";
 import { useAuth } from "./Auth/AuthModule";
 
 function App() {
-  // useEffect(() => {
-  //   checkauth();
-  // }, []);
-  // const { authUser, setAuthUser, isLogged, setIslogged } = useAuth();
-
-  // const navigate = useNavigate();
-
-  // function checkauth() {
-  //   if (!isLogged) {
-  //     navigate("/login");
-  //   }
-  // }
-
   return (
     <div className="App">
       <AuthProvider>

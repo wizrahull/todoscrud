@@ -13,6 +13,16 @@ export default function Navb() {
     navigate("/login");
   };
 
+  React.useEffect(() => {
+    checkauth();
+  }, []);
+
+  function checkauth() {
+    if (!isLogged) {
+      navigate("/login");
+    }
+  }
+
   return (
     <div>
       <Navbar bg="dark" data-bs-theme="dark">

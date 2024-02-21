@@ -3,7 +3,9 @@ import React, { createContext, useState } from "react";
 export const AuthContext = createContext("");
 
 export function AuthProvider(props) {
-  const [authUser, setAuthUser] = useState();
+  const [authUser, setAuthUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
   const [isLogged, setIslogged] = useState();
 
   const meta_data = {
@@ -12,6 +14,7 @@ export function AuthProvider(props) {
     isLogged,
     setIslogged,
   };
+  console.log(authUser);
 
   return (
     <AuthContext.Provider value={meta_data}>
