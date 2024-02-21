@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Auth/AuthModule";
+import { toast } from "react-toastify";
 
 export default function Navb() {
   const { authUser, setAuthUser, isLogged, setIslogged } = useAuth();
@@ -12,6 +13,7 @@ export default function Navb() {
     setIslogged(false);
     navigate("/login");
     localStorage.clear();
+    toast("Logged Out");
   };
 
   React.useEffect(() => {
