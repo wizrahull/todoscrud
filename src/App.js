@@ -1,12 +1,27 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./Components/Views/Navbar";
 import Approutes from "./Approutes";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import { Provider } from "use-http";
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthProvider } from "./Auth/AuthModule";
+import { useAuth } from "./Auth/AuthModule";
+
 function App() {
+  // useEffect(() => {
+  //   checkauth();
+  // }, []);
+  // const { authUser, setAuthUser, isLogged, setIslogged } = useAuth();
+
+  // const navigate = useNavigate();
+
+  // function checkauth() {
+  //   if (!isLogged) {
+  //     navigate("/login");
+  //   }
+  // }
+
   return (
     <div className="App">
       <AuthProvider>
