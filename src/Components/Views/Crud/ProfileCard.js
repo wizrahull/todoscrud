@@ -138,14 +138,6 @@ function ProfileCard() {
                         </tbody>
                       </table>
                       {loading && <Loading />}
-                      {errors && (
-                        <p
-                          className="d-flex justify-content-cente"
-                          style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                        >
-                          There is a technical issue at Backend
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
